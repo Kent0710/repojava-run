@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const http = require("http");
 
 const {
   detectProject,
@@ -139,7 +140,11 @@ app.post("/api/run", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+const { createWebSocketServer } = require("./websocket");
+createWebSocketServer(server);
+
+server.listen(PORT, () => {
   console.log(`JavaRun server running at http://localhost:${PORT}`);
 });
 
