@@ -190,7 +190,7 @@ function createWebSocketServer(server) {
           "sh",
           "-c",
           `
-            cp -a /input/. /app/ &&
+            cp -r --no-preserve=all /input/. /app/ &&
             cd /app &&
             ${command}
           `,

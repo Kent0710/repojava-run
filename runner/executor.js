@@ -71,11 +71,11 @@ function executeProject({
       "sh",
       "-c",
       `
-        cp -a /input/. /app/ &&
+        cp -r --no-preserve=all /input/. /app/ &&
         ${command}
       `,
     );
-
+	console.log("Docker command:", "docker", dockerArgs.join(" "));
     const docker = spawn("docker", dockerArgs);
 
     const startTime = Date.now();
