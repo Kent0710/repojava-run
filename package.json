@@ -1,0 +1,11 @@
+{
+  "name": "javarun",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "run-java": "node runner/runner.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.0"
+  }
+}
