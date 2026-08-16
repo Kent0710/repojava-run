@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "run-java": "node runner/runner.js"
+    "run-java": "node runner/runner.js",
+    "server": "node server/server.js"
   },
   "dependencies": {
-    "adm-zip": "^0.6.0"
+    "adm-zip": "^0.6.0",
+    "express": "^5.2.1"
   }
 }

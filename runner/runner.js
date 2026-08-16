@@ -1,6 +1,4 @@
-const { spawn } = require("child_process");
 const path = require("path");
-const fs = require("fs");
 
 const {
   detectProject,
@@ -10,6 +8,7 @@ const {
 } = require("./detector");
 
 const { downloadGitHubRepository } = require("./github");
+const { executeProject } = require("./executor");
 
 let temporaryDirectory = null;
 
@@ -86,118 +85,12 @@ async function main() {
       process.exit(1);
   }
 
-  const docker = spawn("docker", [
-    "run",
-    "--rm",
-    "-i",
-
-    // Security limits
-    "--network=none",
-    "--memory=512m",
-    "--cpus=1",
-    "--pids-limit=128",
-
-    // Drop Linux capabilities
-    "--cap-drop=ALL",
-
-    // Prevent privilege escalation
-    "--security-opt=no-new-privileges",
-
-    // Repository is read-only
-    "-v",
-    `${projectPath}:/input:ro`,
-
-    "javarun-java17",
-
-    "sh",
-    "-c",
-    `
-      cp -a /input/. /app/ &&
-      ${command}
-    `,
-  ]);
-
-  const startTime = Date.now();
-
-  let timedOut = false;
-  let stdout = "";
-  let stderr = "";
-
-  const timeout = setTimeout(() => {
-    timedOut = true;
-
-    console.log("\nExecution timed out.");
-
-    docker.kill("SIGKILL");
-  }, 30000);
-
-  docker.stdout.on("data", (data) => {
-    const output = data.toString();
-
-    stdout += output;
-
-    process.stdout.write(output);
-  });
-
-  docker.stderr.on("data", (data) => {
-    const output = data.toString();
-
-    stderr += output;
-
-    process.stderr.write(output);
-  });
-
-  // Forward terminal input to the Java application
-  process.stdin.pipe(docker.stdin);
-
-  docker.on("close", (code) => {
-    clearTimeout(timeout);
-
-    const duration = (Date.now() - startTime) / 1000;
-
-    const result = {
-      status: timedOut
-        ? "timeout"
-        : code === 0
-          ? "success"
-          : "error",
-
-      exitCode: code,
-
-      duration,
-
-      projectType,
-
-      entryPoint,
-
-      output: stdout,
-
-      error: stderr,
-
-      timedOut,
-    };
-
-    console.log(`\nProcess exited with code ${code}`);
-    console.log(`Execution time: ${duration.toFixed(2)}s`);
-
-    // Clean up downloaded repository
-    if (temporaryDirectory) {
-      try {
-        fs.rmSync(temporaryDirectory, {
-          recursive: true,
-          force: true,
-        });
-
-        console.log("Temporary files cleaned up.");
-      } catch (error) {
-        console.error(
-          `Failed to clean temporary files: ${error.message}`,
-        );
-      }
-    }
-
-    console.log("\nExecution result:");
-    console.log(JSON.stringify(result, null, 2));
+  await executeProject({
+    projectPath,
+    projectType,
+    entryPoint,
+    temporaryDirectory,
+    command,
   });
 }
 
