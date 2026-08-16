@@ -1,402 +1,302 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>JavaRun</title>
+    <title>JavaRun</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
+      body {
+        margin: 0;
+        min-height: 100vh;
 
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-      background: #f5f5f5;
-      color: #111;
-    }
+        background: #f5f5f5;
+        color: #111;
+      }
 
-    .container {
-      width: min(900px, 92%);
-      margin: 0 auto;
-      padding: 80px 0;
-    }
+      .container {
+        width: min(900px, 92%);
+        margin: 0 auto;
+        padding: 80px 0;
+      }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: 42px;
-    }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 42px;
+      }
 
-    .subtitle {
-      margin: 0 0 40px;
-      color: #666;
-      font-size: 18px;
-    }
+      .subtitle {
+        margin: 0 0 40px;
+        color: #666;
+        font-size: 18px;
+      }
 
-    .input-group {
-      display: flex;
-      gap: 10px;
-    }
+      .input-group {
+        display: flex;
+        gap: 10px;
+      }
 
-    input {
-      flex: 1;
+      input {
+        flex: 1;
 
-      padding: 14px 16px;
+        padding: 14px 16px;
 
-      border: 1px solid #ccc;
-      border-radius: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
 
-      font-size: 16px;
-      outline: none;
-    }
+        font-size: 16px;
+        outline: none;
+      }
 
-    input:focus {
-      border-color: #111;
-    }
+      input:focus {
+        border-color: #111;
+      }
 
-    button {
-      padding: 14px 24px;
+      button {
+        padding: 14px 24px;
 
-      border: none;
-      border-radius: 8px;
+        border: none;
+        border-radius: 8px;
 
-      background: #111;
-      color: white;
+        background: #111;
+        color: white;
 
-      font-size: 16px;
+        font-size: 16px;
 
-      cursor: pointer;
-    }
+        cursor: pointer;
+      }
 
-    button:hover {
-      background: #333;
-    }
+      button:hover {
+        background: #333;
+      }
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
 
-    .status {
-      margin-top: 20px;
+      .status {
+        margin-top: 20px;
 
-      font-size: 14px;
-      color: #666;
-    }
+        font-size: 14px;
+        color: #666;
+      }
 
-    .terminal {
-      margin-top: 30px;
+      .terminal {
+        margin-top: 30px;
 
-      min-height: 350px;
-      padding: 20px;
+        min-height: 350px;
+        padding: 20px;
 
-      background: #111;
-      color: #eee;
+        background: #111;
+        color: #eee;
 
-      border-radius: 10px;
+        border-radius: 10px;
 
-      font-family:
-        "SFMono-Regular",
-        Consolas,
-        "Liberation Mono",
-        monospace;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
-      font-size: 14px;
-      line-height: 1.5;
+        font-size: 14px;
+        line-height: 1.5;
 
-      white-space: pre-wrap;
-      overflow-x: auto;
-    }
+        white-space: pre-wrap;
+        overflow-x: auto;
+      }
 
-    .terminal-input {
-      width: 100%;
+      .terminal-input {
+        width: 100%;
 
-      margin-top: 10px;
+        margin-top: 10px;
 
-      background: #111;
-      color: #eee;
+        background: #111;
+        color: #eee;
 
-      border: 1px solid #333;
-      border-radius: 8px;
+        border: 1px solid #333;
+        border-radius: 8px;
 
-      font-family:
-        "SFMono-Regular",
-        Consolas,
-        "Liberation Mono",
-        monospace;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
-      font-size: 14px;
-    }
+        font-size: 14px;
+      }
 
-    .terminal-input:focus {
-      border-color: #666;
-    }
-  </style>
-</head>
+      .terminal-input:focus {
+        border-color: #666;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
+    <main class="container">
+      <h1>JavaRun</h1>
 
-  <main class="container">
+      <p class="subtitle">Run Java applications directly from GitHub.</p>
 
-    <h1>JavaRun</h1>
+      <!-- GitHub URL -->
+      <div class="input-group">
+        <input
+          id="githubUrl"
+          type="url"
+          placeholder="https://github.com/user/java-project"
+        />
 
-    <p class="subtitle">
-      Run Java applications directly from GitHub.
-    </p>
+        <button id="runButton">Run</button>
 
-    <!-- GitHub URL -->
-    <div class="input-group">
+        <button id="stopButton" disabled>Stop</button>
+      </div>
 
+      <!-- Status -->
+      <div id="status" class="status">Ready.</div>
+
+      <!-- Terminal -->
+      <pre id="terminal" class="terminal"></pre>
+
+      <!-- Terminal input -->
       <input
-        id="githubUrl"
-        type="url"
-        placeholder="https://github.com/user/java-project"
+        id="terminalInput"
+        class="terminal-input"
+        type="text"
+        placeholder="Type input here and press Enter..."
+        disabled
       />
+    </main>
 
-      <button id="runButton">
-        Run
-      </button>
+    <script>
+      const githubUrlInput = document.getElementById("githubUrl");
 
-    </div>
+      const runButton = document.getElementById("runButton");
+      const stopButton = document.getElementById("stopButton");
 
-    <!-- Status -->
-    <div id="status" class="status">
-      Ready.
-    </div>
+      const status = document.getElementById("status");
 
-    <!-- Terminal -->
-    <pre id="terminal" class="terminal"></pre>
+      const terminal = document.getElementById("terminal");
 
-    <!-- Terminal input -->
-    <input
-      id="terminalInput"
-      class="terminal-input"
-      type="text"
-      placeholder="Type input here and press Enter..."
-      disabled
-    />
+      const terminalInput = document.getElementById("terminalInput");
 
-  </main>
+      let socket = null;
 
-  <script>
-    const githubUrlInput =
-      document.getElementById("githubUrl");
+      /*
+       * Add text to the terminal.
+       */
+      function appendTerminal(text) {
+        terminal.textContent += text;
 
-    const runButton =
-      document.getElementById("runButton");
+        terminal.scrollTop = terminal.scrollHeight;
+      }
 
-    const status =
-      document.getElementById("status");
+      /*
+       * Connect to the WebSocket server.
+       */
+      function connectWebSocket() {
+        return new Promise((resolve, reject) => {
+          socket = new WebSocket(`ws://${window.location.host}/ws`);
 
-    const terminal =
-      document.getElementById("terminal");
+          socket.addEventListener("open", () => {
+            console.log("WebSocket connected.");
 
-    const terminalInput =
-      document.getElementById("terminalInput");
+            resolve();
+          });
 
+          socket.addEventListener("error", (error) => {
+            console.error("WebSocket error:", error);
 
-    let socket = null;
+            reject(error);
+          });
 
+          socket.addEventListener("message", (event) => {
+            const message = JSON.parse(event.data);
 
-    /*
-     * Add text to the terminal.
-     */
-    function appendTerminal(text) {
-      terminal.textContent += text;
+            console.log("WebSocket message:", message);
 
-      terminal.scrollTop =
-        terminal.scrollHeight;
-    }
+            /*
+             * Status message
+             */
+            if (message.type === "status") {
+              status.textContent = message.message;
+            }
 
+            /*
+             * Java stdout/stderr
+             */
+            if (message.type === "output") {
+              appendTerminal(message.data);
+            }
 
-    /*
-     * Connect to the WebSocket server.
-     */
-    function connectWebSocket() {
+            /*
+             * Process exited
+             */
+            if (message.type === "exit") {
+              status.textContent = `Process exited with code ${message.code}`;
 
-      return new Promise((resolve, reject) => {
+              terminalInput.disabled = true;
 
-        socket = new WebSocket(
-          `ws://${window.location.host}/ws`
-        );
+              runButton.disabled = false;
+              stopButton.disabled = true;
+              terminalInput.disabled = true;
+            }
 
+            /*
+             * Error
+             */
+            if (message.type === "error") {
+              status.textContent = "Execution error.";
 
-        socket.addEventListener("open", () => {
+              appendTerminal("\n\n[Error] " + message.message);
 
-          console.log(
-            "WebSocket connected."
-          );
+              terminalInput.disabled = true;
 
-          resolve();
+              runButton.disabled = false;
+            }
+          });
 
-        });
-
-
-        socket.addEventListener("error", (error) => {
-
-          console.error(
-            "WebSocket error:",
-            error
-          );
-
-          reject(error);
-
-        });
-
-
-        socket.addEventListener("message", (event) => {
-
-          const message =
-            JSON.parse(event.data);
-
-
-          console.log(
-            "WebSocket message:",
-            message
-          );
-
-
-          /*
-           * Status message
-           */
-          if (message.type === "status") {
-
-            status.textContent =
-              message.message;
-
-          }
-
-
-          /*
-           * Java stdout/stderr
-           */
-          if (message.type === "output") {
-
-            appendTerminal(
-              message.data
-            );
-
-          }
-
-
-          /*
-           * Process exited
-           */
-          if (message.type === "exit") {
-
-            status.textContent =
-              `Process exited with code ${message.code}`;
+          socket.addEventListener("close", () => {
+            console.log("WebSocket disconnected.");
 
             terminalInput.disabled = true;
-
-            runButton.disabled = false;
-
-          }
-
-
-          /*
-           * Error
-           */
-          if (message.type === "error") {
-
-            status.textContent =
-              "Execution error.";
-
-            appendTerminal(
-              "\n\n[Error] " +
-              message.message
-            );
-
-            terminalInput.disabled = true;
-
-            runButton.disabled = false;
-
-          }
-
+          });
         });
+      }
 
-
-        socket.addEventListener("close", () => {
-
-          console.log(
-            "WebSocket disconnected."
-          );
-
-          terminalInput.disabled = true;
-
-        });
-
-      });
-
-    }
-
-
-    /*
-     * Run button.
-     */
-    runButton.addEventListener(
-      "click",
-      async () => {
-
-        const githubUrl =
-          githubUrlInput.value.trim();
-
+      /*
+       * Run button.
+       */
+      runButton.addEventListener("click", async () => {
+        const githubUrl = githubUrlInput.value.trim();
 
         if (!githubUrl) {
-
-          status.textContent =
-            "Please enter a GitHub repository URL.";
+          status.textContent = "Please enter a GitHub repository URL.";
 
           return;
-
         }
-
 
         /*
          * Reset UI.
          */
         terminal.textContent = "";
 
-        status.textContent =
-          "Connecting...";
+        status.textContent = "Connecting...";
 
         runButton.disabled = true;
-
+        stopButton.disabled = false;
         terminalInput.disabled = true;
 
-
         try {
-
           /*
            * Close previous socket.
            */
-          if (
-            socket &&
-            socket.readyState === WebSocket.OPEN
-          ) {
-
+          if (socket && socket.readyState === WebSocket.OPEN) {
             socket.close();
-
           }
-
 
           /*
            * Create new WebSocket connection.
            */
           await connectWebSocket();
-
 
           /*
            * Start Java project.
@@ -405,9 +305,8 @@
             JSON.stringify({
               type: "start",
               githubUrl: githubUrl,
-            })
+            }),
           );
-
 
           /*
            * Enable terminal input.
@@ -415,52 +314,50 @@
           terminalInput.disabled = false;
 
           terminalInput.focus();
-
-
         } catch (error) {
-
           console.error(error);
 
-          status.textContent =
-            "Could not connect to JavaRun.";
+          status.textContent = "Could not connect to JavaRun.";
 
-          appendTerminal(
-            "\n\n[Error] Could not connect to server."
-          );
+          appendTerminal("\n\n[Error] Could not connect to server.");
 
           runButton.disabled = false;
+        }
+      });
 
+      /*
+       * Stop button.
+       */
+      stopButton.addEventListener("click", () => {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+          return;
         }
 
-      }
-    );
+        status.textContent = "Stopping...";
 
+        socket.send(
+          JSON.stringify({
+            type: "stop",
+          }),
+        );
 
-    /*
-     * Send terminal input.
-     */
-    terminalInput.addEventListener(
-      "keydown",
-      (event) => {
+        stopButton.disabled = true;
+        terminalInput.disabled = true;
+      });
 
+      /*
+       * Send terminal input.
+       */
+      terminalInput.addEventListener("keydown", (event) => {
         if (event.key !== "Enter") {
           return;
         }
 
-
-        if (
-          !socket ||
-          socket.readyState !== WebSocket.OPEN
-        ) {
-
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
           return;
-
         }
 
-
-        const input =
-          terminalInput.value;
-
+        const input = terminalInput.value;
 
         /*
          * Send input to Java.
@@ -469,37 +366,24 @@
           JSON.stringify({
             type: "input",
             input: input + "\n",
-          })
+          }),
         );
-
 
         /*
          * Clear input box.
          */
         terminalInput.value = "";
+      });
 
-      }
-    );
-
-
-    /*
-     * Allow Enter in the GitHub URL field
-     * to run the project.
-     */
-    githubUrlInput.addEventListener(
-      "keydown",
-      (event) => {
-
+      /*
+       * Allow Enter in the GitHub URL field
+       * to run the project.
+       */
+      githubUrlInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-
           runButton.click();
-
         }
-
-      }
-    );
-
-  </script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>
