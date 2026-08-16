@@ -1,389 +1,853 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
 
-    <title>JavaRun</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+  <title>JavaRun</title>
 
-      body {
-        margin: 0;
-        min-height: 100vh;
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    body {
+      margin: 0;
+      min-height: 100vh;
 
-        background: #f5f5f5;
-        color: #111;
-      }
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    .container {
+      width: min(1000px, 92%);
+      margin: 0 auto;
+      padding: 70px 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: 42px;
+      letter-spacing: -1px;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+
+      border-radius: 999px;
+
+      background: #e5e5e5;
+
+      color: #555;
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin: 0 0 35px;
+
+      color: #666;
+
+      font-size: 18px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .github-input {
+      flex: 1;
+
+      padding: 14px 16px;
+
+      border: 1px solid #ccc;
+      border-radius: 8px;
+
+      background: white;
+
+      font-size: 16px;
+
+      outline: none;
+    }
+
+    .github-input:focus {
+      border-color: #111;
+    }
+
+    button {
+      padding: 14px 22px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: #111;
+      color: white;
+
+      font-size: 15px;
+      font-weight: 500;
+
+      cursor: pointer;
+
+      transition:
+        opacity 0.15s,
+        background 0.15s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #333;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .stop-button {
+      background: #c62828;
+    }
+
+    .stop-button:hover:not(:disabled) {
+      background: #a61f1f;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+
+      margin-top: 12px;
+    }
+
+    .status {
+      margin-top: 18px;
+
+      color: #666;
+
+      font-size: 14px;
+    }
+
+    .terminal-wrapper {
+      margin-top: 25px;
+    }
+
+    .terminal {
+      margin: 0;
+
+      min-height: 420px;
+      max-height: 600px;
+
+      padding: 20px;
+
+      background: #111;
+      color: #eee;
+
+      border-radius: 10px 10px 0 0;
+
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+      font-size: 14px;
+      line-height: 1.55;
+
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      overflow-y: auto;
+    }
+
+    .terminal-input-wrapper {
+      display: flex;
+      align-items: center;
+
+      padding: 0 16px;
+
+      background: #111;
+
+      border-radius: 0 0 10px 10px;
+
+      border-top: 1px solid #2c2c2c;
+    }
+
+    .terminal-prompt {
+      color: #888;
+
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+      font-size: 14px;
+    }
+
+    .terminal-input {
+      flex: 1;
+
+      padding: 14px 8px;
+
+      border: none;
+      outline: none;
+
+      background: transparent;
+      color: #eee;
+
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+      font-size: 14px;
+    }
+
+    .terminal-input::placeholder {
+      color: #555;
+    }
+
+    .terminal-input:disabled {
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 700px) {
       .container {
-        width: min(900px, 92%);
-        margin: 0 auto;
-        padding: 80px 0;
+        padding: 40px 0;
+      }
+
+      .header {
+        align-items: flex-start;
       }
 
       h1 {
-        margin: 0 0 8px;
-        font-size: 42px;
-      }
-
-      .subtitle {
-        margin: 0 0 40px;
-        color: #666;
-        font-size: 18px;
+        font-size: 32px;
       }
 
       .input-group {
-        display: flex;
-        gap: 10px;
+        flex-direction: column;
       }
 
-      input {
-        flex: 1;
-
-        padding: 14px 16px;
-
-        border: 1px solid #ccc;
-        border-radius: 8px;
-
-        font-size: 16px;
-        outline: none;
-      }
-
-      input:focus {
-        border-color: #111;
-      }
-
-      button {
-        padding: 14px 24px;
-
-        border: none;
-        border-radius: 8px;
-
-        background: #111;
-        color: white;
-
-        font-size: 16px;
-
-        cursor: pointer;
-      }
-
-      button:hover {
-        background: #333;
-      }
-
-      button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      .status {
-        margin-top: 20px;
-
-        font-size: 14px;
-        color: #666;
-      }
-
-      .terminal {
-        margin-top: 30px;
-
-        min-height: 350px;
-        padding: 20px;
-
-        background: #111;
-        color: #eee;
-
-        border-radius: 10px;
-
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-
-        font-size: 14px;
-        line-height: 1.5;
-
-        white-space: pre-wrap;
-        overflow-x: auto;
-      }
-
-      .terminal-input {
+      .controls {
         width: 100%;
-
-        margin-top: 10px;
-
-        background: #111;
-        color: #eee;
-
-        border: 1px solid #333;
-        border-radius: 8px;
-
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-
-        font-size: 14px;
       }
 
-      .terminal-input:focus {
-        border-color: #666;
+      .controls button {
+        flex: 1;
       }
-    </style>
-  </head>
+    }
+  </style>
+</head>
 
-  <body>
-    <main class="container">
+<body>
+
+  <main class="container">
+
+    <div class="header">
+
       <h1>JavaRun</h1>
 
-      <p class="subtitle">Run Java applications directly from GitHub.</p>
-
-      <!-- GitHub URL -->
-      <div class="input-group">
-        <input
-          id="githubUrl"
-          type="url"
-          placeholder="https://github.com/user/java-project"
-        />
-
-        <button id="runButton">Run</button>
-
-        <button id="stopButton" disabled>Stop</button>
+      <div
+        id="statusBadge"
+        class="status-badge"
+      >
+        Ready
       </div>
 
-      <!-- Status -->
-      <div id="status" class="status">Ready.</div>
+    </div>
 
-      <!-- Terminal -->
-      <pre id="terminal" class="terminal"></pre>
+    <p class="subtitle">
+      Run Java applications directly from GitHub.
+    </p>
 
-      <!-- Terminal input -->
+
+    <!-- GitHub URL -->
+
+    <div class="input-group">
+
       <input
-        id="terminalInput"
-        class="terminal-input"
-        type="text"
-        placeholder="Type input here and press Enter..."
-        disabled
+        id="githubUrl"
+        class="github-input"
+        type="url"
+        placeholder="https://github.com/user/java-project"
       />
-    </main>
 
-    <script>
-      const githubUrlInput = document.getElementById("githubUrl");
+    </div>
 
-      const runButton = document.getElementById("runButton");
-      const stopButton = document.getElementById("stopButton");
 
-      const status = document.getElementById("status");
+    <!-- Controls -->
 
-      const terminal = document.getElementById("terminal");
+    <div class="controls">
 
-      const terminalInput = document.getElementById("terminalInput");
+      <button
+        id="runButton"
+      >
+        Run
+      </button>
 
-      let socket = null;
+      <button
+        id="stopButton"
+        class="stop-button"
+        disabled
+      >
+        Stop
+      </button>
 
-      /*
-       * Add text to the terminal.
-       */
-      function appendTerminal(text) {
-        terminal.textContent += text;
+    </div>
 
-        terminal.scrollTop = terminal.scrollHeight;
-      }
 
-      /*
-       * Connect to the WebSocket server.
-       */
-      function connectWebSocket() {
-        return new Promise((resolve, reject) => {
-          socket = new WebSocket(`ws://${window.location.host}/ws`);
+    <!-- Status -->
 
-          socket.addEventListener("open", () => {
-            console.log("WebSocket connected.");
+    <div
+      id="status"
+      class="status"
+    >
+      Ready.
+    </div>
 
-            resolve();
-          });
 
-          socket.addEventListener("error", (error) => {
-            console.error("WebSocket error:", error);
+    <!-- Terminal -->
 
-            reject(error);
-          });
+    <div class="terminal-wrapper">
 
-          socket.addEventListener("message", (event) => {
-            const message = JSON.parse(event.data);
+      <pre
+        id="terminal"
+        class="terminal"
+      ></pre>
 
-            console.log("WebSocket message:", message);
 
-            /*
-             * Status message
-             */
-            if (message.type === "status") {
-              status.textContent = message.message;
+      <div class="terminal-input-wrapper">
+
+        <span class="terminal-prompt">
+          &gt;
+        </span>
+
+        <input
+          id="terminalInput"
+          class="terminal-input"
+          type="text"
+          placeholder="Enter input..."
+          disabled
+          autocomplete="off"
+        />
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    const githubUrlInput =
+      document.getElementById(
+        "githubUrl"
+      );
+
+    const runButton =
+      document.getElementById(
+        "runButton"
+      );
+
+    const stopButton =
+      document.getElementById(
+        "stopButton"
+      );
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+    const statusBadge =
+      document.getElementById(
+        "statusBadge"
+      );
+
+    const terminal =
+      document.getElementById(
+        "terminal"
+      );
+
+    const terminalInput =
+      document.getElementById(
+        "terminalInput"
+      );
+
+
+    let socket = null;
+
+
+    /*
+     * Add output to terminal.
+     */
+
+    function appendTerminal(text) {
+
+      terminal.textContent += text;
+
+      terminal.scrollTop =
+        terminal.scrollHeight;
+
+    }
+
+
+    /*
+     * Update status.
+     */
+
+    function setStatus(
+      message,
+      badge = "Running"
+    ) {
+
+      status.textContent =
+        message;
+
+      statusBadge.textContent =
+        badge;
+
+    }
+
+
+    /*
+     * Connect WebSocket.
+     */
+
+    function connectWebSocket() {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          socket = new WebSocket(
+            `ws://${window.location.host}/ws`
+          );
+
+
+          socket.addEventListener(
+            "open",
+            () => {
+
+              console.log(
+                "WebSocket connected."
+              );
+
+              resolve();
+
             }
+          );
 
-            /*
-             * Java stdout/stderr
-             */
-            if (message.type === "output") {
-              appendTerminal(message.data);
+
+          socket.addEventListener(
+            "error",
+            (error) => {
+
+              console.error(
+                "WebSocket error:",
+                error
+              );
+
+              reject(error);
+
             }
+          );
 
-            /*
-             * Process exited
-             */
-            if (message.type === "exit") {
-              status.textContent = `Process exited with code ${message.code}`;
 
-              terminalInput.disabled = true;
+          socket.addEventListener(
+            "message",
+            (event) => {
 
-              runButton.disabled = false;
-              stopButton.disabled = true;
-              terminalInput.disabled = true;
+              const message =
+                JSON.parse(
+                  event.data
+                );
+
+
+              console.log(
+                "WebSocket message:",
+                message
+              );
+
+
+              /*
+               * Status
+               */
+
+              if (
+                message.type ===
+                "status"
+              ) {
+
+                setStatus(
+                  message.message,
+                  "Running"
+                );
+
+              }
+
+
+              /*
+               * Java output
+               */
+
+              if (
+                message.type ===
+                "output"
+              ) {
+
+                appendTerminal(
+                  message.data
+                );
+
+              }
+
+
+              /*
+               * Process exited
+               */
+
+              if (
+                message.type ===
+                "exit"
+              ) {
+
+                setStatus(
+                  `Process exited with code ${message.code}`,
+                  "Exited"
+                );
+
+                terminalInput.disabled =
+                  true;
+
+                runButton.disabled =
+                  false;
+
+                stopButton.disabled =
+                  true;
+
+              }
+
+
+              /*
+               * Error
+               */
+
+              if (
+                message.type ===
+                "error"
+              ) {
+
+                setStatus(
+                  "Execution error.",
+                  "Error"
+                );
+
+                appendTerminal(
+                  "\n\n[Error] " +
+                  message.message
+                );
+
+                terminalInput.disabled =
+                  true;
+
+                runButton.disabled =
+                  false;
+
+                stopButton.disabled =
+                  true;
+
+              }
+
             }
+          );
 
-            /*
-             * Error
-             */
-            if (message.type === "error") {
-              status.textContent = "Execution error.";
 
-              appendTerminal("\n\n[Error] " + message.message);
+          socket.addEventListener(
+            "close",
+            () => {
 
-              terminalInput.disabled = true;
+              console.log(
+                "WebSocket disconnected."
+              );
 
-              runButton.disabled = false;
+              terminalInput.disabled =
+                true;
+
             }
-          });
+          );
 
-          socket.addEventListener("close", () => {
-            console.log("WebSocket disconnected.");
+        }
+      );
 
-            terminalInput.disabled = true;
-          });
-        });
-      }
+    }
 
-      /*
-       * Run button.
-       */
-      runButton.addEventListener("click", async () => {
-        const githubUrl = githubUrlInput.value.trim();
+
+    /*
+     * Run project.
+     */
+
+    runButton.addEventListener(
+      "click",
+      async () => {
+
+        const githubUrl =
+          githubUrlInput.value.trim();
+
 
         if (!githubUrl) {
-          status.textContent = "Please enter a GitHub repository URL.";
+
+          setStatus(
+            "Please enter a GitHub repository URL.",
+            "Error"
+          );
 
           return;
+
         }
 
+
         /*
-         * Reset UI.
+         * Reset terminal.
          */
+
         terminal.textContent = "";
 
-        status.textContent = "Connecting...";
 
-        runButton.disabled = true;
-        stopButton.disabled = false;
-        terminalInput.disabled = true;
+        setStatus(
+          "Connecting...",
+          "Starting"
+        );
+
+
+        runButton.disabled =
+          true;
+
+        stopButton.disabled =
+          false;
+
+        terminalInput.disabled =
+          true;
+
 
         try {
+
           /*
            * Close previous socket.
            */
-          if (socket && socket.readyState === WebSocket.OPEN) {
+
+          if (
+            socket &&
+            socket.readyState ===
+              WebSocket.OPEN
+          ) {
+
             socket.close();
+
           }
 
-          /*
-           * Create new WebSocket connection.
-           */
-          await connectWebSocket();
 
           /*
-           * Start Java project.
+           * Connect.
            */
+
+          await connectWebSocket();
+
+
+          /*
+           * Start project.
+           */
+
           socket.send(
             JSON.stringify({
               type: "start",
-              githubUrl: githubUrl,
-            }),
+              githubUrl:
+                githubUrl,
+            })
           );
 
+
           /*
-           * Enable terminal input.
+           * Enable input.
            */
-          terminalInput.disabled = false;
+
+          terminalInput.disabled =
+            false;
 
           terminalInput.focus();
+
         } catch (error) {
+
           console.error(error);
 
-          status.textContent = "Could not connect to JavaRun.";
+          setStatus(
+            "Could not connect to JavaRun.",
+            "Error"
+          );
 
-          appendTerminal("\n\n[Error] Could not connect to server.");
+          appendTerminal(
+            "\n\n[Error] Could not connect to server."
+          );
 
-          runButton.disabled = false;
+          runButton.disabled =
+            false;
+
+          stopButton.disabled =
+            true;
+
         }
-      });
 
-      /*
-       * Stop button.
-       */
-      stopButton.addEventListener("click", () => {
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
+      }
+    );
+
+
+    /*
+     * Stop project.
+     */
+
+    stopButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          !socket ||
+          socket.readyState !==
+            WebSocket.OPEN
+        ) {
+
           return;
+
         }
 
-        status.textContent = "Stopping...";
+
+        setStatus(
+          "Stopping...",
+          "Stopping"
+        );
+
 
         socket.send(
           JSON.stringify({
             type: "stop",
-          }),
+          })
         );
 
-        stopButton.disabled = true;
-        terminalInput.disabled = true;
-      });
 
-      /*
-       * Send terminal input.
-       */
-      terminalInput.addEventListener("keydown", (event) => {
-        if (event.key !== "Enter") {
+        stopButton.disabled =
+          true;
+
+        terminalInput.disabled =
+          true;
+
+      }
+    );
+
+
+    /*
+     * Terminal input.
+     */
+
+    terminalInput.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key !== "Enter"
+        ) {
+
           return;
+
         }
 
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
+
+        if (
+          !socket ||
+          socket.readyState !==
+            WebSocket.OPEN
+        ) {
+
           return;
+
         }
 
-        const input = terminalInput.value;
+
+        const input =
+          terminalInput.value;
+
+
+        /*
+         * Display what the user typed.
+         */
+
+        appendTerminal(
+          `> ${input}\n`
+        );
+
 
         /*
          * Send input to Java.
          */
+
         socket.send(
           JSON.stringify({
             type: "input",
-            input: input + "\n",
-          }),
+            input:
+              input + "\n",
+          })
         );
 
-        /*
-         * Clear input box.
-         */
-        terminalInput.value = "";
-      });
 
-      /*
-       * Allow Enter in the GitHub URL field
-       * to run the project.
-       */
-      githubUrlInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
+        /*
+         * Clear input.
+         */
+
+        terminalInput.value =
+          "";
+
+      }
+    );
+
+
+    /*
+     * Enter on GitHub URL.
+     */
+
+    githubUrlInput.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
           runButton.click();
+
         }
-      });
-    </script>
-  </body>
+
+      }
+    );
+
+  </script>
+
+</body>
 </html>
