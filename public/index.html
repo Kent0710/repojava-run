@@ -441,7 +441,7 @@
         (resolve, reject) => {
 
           socket = new WebSocket(
-            `ws://${window.location.host}/ws`
+            `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`
           );
 
 
